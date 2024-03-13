@@ -1,0 +1,6 @@
+@IMSAPI_HostAddress = http://localhost:5131
+
+GET {{IMSAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
