@@ -1,5 +1,4 @@
 ﻿using IMSAPI.DB;
-using IMSAPI.Migrations;
 using IMSAPI.Models.Administration;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;

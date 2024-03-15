@@ -36,7 +36,7 @@ namespace IMSAPI.Services.Administration
             var objList = new List<UserEntity>();
             try
             {
-                var obj = await _config.userModels.Where(x => x.CompanyId == companayId && x.IsDeleted==false && (x.Id == id || id == 0)  && (x.RoleId == roleId || roleId == 0)).ToListAsync();
+                var obj = await _config.userModels.Where(x => x.IsDeleted==false && (x.Id == id || id == 0)  && (x.RoleId == roleId || roleId == 0)).ToListAsync();
                 if (obj != null)
                 {
                     objList = obj
@@ -89,7 +89,7 @@ namespace IMSAPI.Services.Administration
                         Password = obj.Password,
                         IsActive = obj.IsActive,
                         RoleId = obj.RoleId,
-                        CompanyId = companayId,
+                      //  CompanyId = companayId,
                         CreatedOn = DateTime.Now,
                         CreatedBy = obj.CreatedBy
                     };

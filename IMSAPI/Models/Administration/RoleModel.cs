@@ -34,8 +34,8 @@ namespace IMSAPI.Models.Administration
         [Required]
         public int RoleId { get; set; }
         public RoleModel Role { get; set; }
-        public int CompanyId { get; set; }
-        public CompanyModel Company { get; set; }
+        //public int CompanyId { get; set; }
+        //public CompanyModel Company { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsDeleted { get; set; } = false;
         public DateTime CreatedOn { get; set; } = DateTime.Now;
