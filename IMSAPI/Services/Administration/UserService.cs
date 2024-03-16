@@ -3,6 +3,7 @@ using IMSAPI.Models.Administration;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace IMSAPI.Services.Administration
 {
@@ -31,12 +32,27 @@ namespace IMSAPI.Services.Administration
             }
         }
 
-        public async Task<IEnumerable<UserEntity>> Get(int companayId, int roleId=0, int id = 0)
+        public async Task<IEnumerable<UserEntity>> Get(int companyId, int roleId=0, int id = 0)
         {
             var objList = new List<UserEntity>();
             try
             {
-                var obj = await _config.userModels.Where(x => x.IsDeleted==false && (x.Id == id || id == 0)  && (x.RoleId == roleId || roleId == 0)).ToListAsync();
+                //var query = from users in _config.userModels
+                //          join roles in _config.roleModels
+                //          on users.RoleId equals roles.Id
+                //          where  (roles.CompanyId== companayId && (users.Id == id || id == 0) && (users.RoleId == roleId || roleId == 0)
+                //          ) 
+                //          select new 
+                //          {
+                //              users.RoleId,
+                //              users.Id,
+                //              users.UserId,
+                //              users.Password,
+                //              users.IsActive
+                //          };
+
+                //var obj = await query.ToListAsync();     
+                var obj = await _config.userModels.Where(x => x.CompanyId== companyId && x.IsDeleted==false && (x.Id == id || id == 0)  && (x.RoleId == roleId || roleId == 0)).ToListAsync();
                 if (obj != null)
                 {
                     objList = obj

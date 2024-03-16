@@ -23,7 +23,7 @@ namespace IMSAPI.Models.Administration
         public int? UpdatedBy { get; set; }
         public ICollection<EntityModel> Entitys { get; set; }
         public ICollection<RoleModel> Roles { get; set; }
-      //  public ICollection<UserModel> Users { get; set; }
+        public ICollection<UserModel> Users { get; set; }
 
 
     }
