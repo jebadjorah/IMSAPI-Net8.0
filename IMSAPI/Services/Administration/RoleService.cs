@@ -3,6 +3,7 @@ using IMSAPI.Models.Administration;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.Immutable;
 
 namespace IMSAPI.Services.Administration
@@ -10,6 +11,10 @@ namespace IMSAPI.Services.Administration
     public class RoleService : IRoleService
     {
         private readonly AppDbContext _config;
+        public RoleService(AppDbContext config)
+        {
+            _config = config;
+        }
         public async Task<bool> Delete(int id)
         {
             try
@@ -17,7 +22,7 @@ namespace IMSAPI.Services.Administration
                 var item = await _config.roleModels.FindAsync(id);
                 if (item != null)
                 {
-                    item.IsDeleted = true;
+                    item.IsDeleted = true; // soft delete
                     await _config.SaveChangesAsync();
                 }
                 return true;
@@ -28,41 +33,25 @@ namespace IMSAPI.Services.Administration
             }
         }
 
-        public async Task<IEnumerable<RoleEntity>> Get(int id = 0)
+        public async Task<IEnumerable<RoleEntity>> Get(int companyId, int id = 0)
         {
             var objList = new List<RoleEntity>();
             try
             {
-                if (id > 0)
+                    var obj = await _config.roleModels
+                    .Where(x => x.CompanyId== companyId && x.IsDeleted== false && (x.Id== id || id ==0)).ToListAsync();
+                if (obj != null && obj.Count >0)
                 {
-                    //RoleModel obj = await _config.roleModels.FindAsync(id);
-                    //RoleModel obj = await _config.roleModels.Where(x=> x.Id == id && x.IsDeleted ==false).FirstAsync();
-                    RoleModel obj = await _config.roleModels.FirstOrDefaultAsync(x => x.Id==id && x.IsDeleted==true);
-                    var item = new RoleEntity
-                    {
-                        RoleName = obj.RoleName,
-                        RoleDescription = obj.RoleDescription,
-                        Sequence = obj.Sequence,
-                        IsActive = obj.IsActive,
-                        CompanyId = obj.CompanyId,
-                        Id = obj.Id
-                    };
-                    objList.Add(item);
-                }
-                else
-                {
-                    List<RoleModel> companyModels = await _config.roleModels.ToListAsync();
-                    //List<RoleModel> companyModels = await _config.roleModels.Where(x => x.IsDeleted== false).ToListAsync();
-                     objList = companyModels
-                        .Select(x => new RoleEntity
-                        {
-                            RoleName = x.RoleName,
-                            RoleDescription = x.RoleDescription,
-                            Sequence = x.Sequence,
-                            IsActive = x.IsActive,
-                            CompanyId = x.CompanyId,
-                            Id = x.Id
-                        }).ToList();
+                    objList = obj
+                       .Select(x => new RoleEntity
+                       {
+                           RoleName = x.RoleName,
+                           RoleDescription = x.RoleDescription,
+                           Sequence = x.Sequence,
+                           IsActive = x.IsActive,
+                           CompanyId = x.CompanyId,
+                           Id = x.Id
+                       }).ToList();
                 }
             }
             catch (Exception ex)
@@ -78,7 +67,7 @@ namespace IMSAPI.Services.Administration
             {
                 if (obj.Id > 0)
                 {
-                    var result = await _config.roleModels.FirstOrDefaultAsync(x => x.Id == obj.Id);
+                    var result = await _config.roleModels.FirstOrDefaultAsync(x => x.IsDeleted == false && x.Id == obj.Id);
                     if (result != null)
                     {
                         result.RoleName = obj.RoleName;

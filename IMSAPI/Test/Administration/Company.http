@@ -31,9 +31,9 @@ POST {{rootUrl}}/SaveUpdate
 Content-Type: application/json
 
   {
-      "id":2,
-    "companyCode": "C-001",
-    "companyName": "BusinessBay",
+      "id":3,
+    "companyCode": "C-002",
+    "companyName": "BusinessBay - 2 updtaed",
     "companyAddress": "Dubai",
     "isActive": true,
     "email": "bay@email.com",

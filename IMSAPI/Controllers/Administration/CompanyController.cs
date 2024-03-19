@@ -1,6 +1,7 @@
 ﻿using IMSAPI.DB;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ namespace IMSAPI.Controllers.Administration
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class CompanyController : ControllerBase
     {
         

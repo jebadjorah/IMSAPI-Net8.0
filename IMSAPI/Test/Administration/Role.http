@@ -17,13 +17,13 @@ Import System.Runtime.InteropServices
 <Assembly: Guid("538a1168-39dc-401a-9d67-fdbee36a5613")> 
 
 
-@rootUrl=https://localhost:7101/api/Entity
+@rootUrl=https://localhost:7101/api/Role
 ### Get All
 GET {{rootUrl}}/Get
 
 
 #####  Get by Id
-GET {{rootUrl}}/GetbyId?id=3
+GET {{rootUrl}}/GetbyId?id=2
 
 ##### Save / Update
 
@@ -31,11 +31,12 @@ POST {{rootUrl}}/SaveUpdate
 Content-Type: application/json
 
   {
-  "entityName": "Branch-2",
-  "entityCode": "Branch-2",
-  "isActive": true,
-  "parentId": 2
+      "id" :2,
+  "roleName": "User",
+  "roleDescription": "User",
+  "sequence": 2,
+  "isActive": true
   }
 
 #### Delete
-DELETE {{rootUrl}}/Delete?id=1
+DELETE {{rootUrl}}/Delete?id=5

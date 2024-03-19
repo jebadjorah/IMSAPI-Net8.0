@@ -14,6 +14,18 @@ namespace IMSAPI.Services.Administration
         {
             _config = config;
         }
+
+        public async Task<bool> LoginUser(string userName, string Password)
+        {
+            try {
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
         public async Task<bool> Delete(int id)
         {
             try
@@ -21,7 +33,7 @@ namespace IMSAPI.Services.Administration
                 var item = await _config.userModels.FindAsync(id);
                 if (item != null)
                 {
-                    item.IsDeleted = true;
+                    item.IsDeleted = true;  // Soft delete
                     await _config.SaveChangesAsync();
                 }
                 return true;
@@ -37,21 +49,6 @@ namespace IMSAPI.Services.Administration
             var objList = new List<UserEntity>();
             try
             {
-                //var query = from users in _config.userModels
-                //          join roles in _config.roleModels
-                //          on users.RoleId equals roles.Id
-                //          where  (roles.CompanyId== companayId && (users.Id == id || id == 0) && (users.RoleId == roleId || roleId == 0)
-                //          ) 
-                //          select new 
-                //          {
-                //              users.RoleId,
-                //              users.Id,
-                //              users.UserId,
-                //              users.Password,
-                //              users.IsActive
-                //          };
-
-                //var obj = await query.ToListAsync();     
                 var obj = await _config.userModels.Where(x => x.CompanyId== companyId && x.IsDeleted==false && (x.Id == id || id == 0)  && (x.RoleId == roleId || roleId == 0)).ToListAsync();
                 if (obj != null)
                 {
@@ -74,7 +71,7 @@ namespace IMSAPI.Services.Administration
             return objList;
         }
 
-        public async Task<bool> SaveUpdate(int companayId,UserEntity obj)
+        public async Task<bool> SaveUpdate(UserEntity obj)
         {
             try
             {
@@ -89,6 +86,7 @@ namespace IMSAPI.Services.Administration
                         result.RoleId = obj.RoleId;
                         result.UpdatedOn = DateTime.Now;
                         result.UpdatedBy = obj.CreatedBy;
+                        result.CompanyId = obj.CompanyId;
                         await _config.SaveChangesAsync();
                     }
                     else
@@ -105,7 +103,7 @@ namespace IMSAPI.Services.Administration
                         Password = obj.Password,
                         IsActive = obj.IsActive,
                         RoleId = obj.RoleId,
-                      //  CompanyId = companayId,
+                        CompanyId = obj.CompanyId,
                         CreatedOn = DateTime.Now,
                         CreatedBy = obj.CreatedBy
                     };

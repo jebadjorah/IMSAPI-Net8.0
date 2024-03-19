@@ -11,15 +11,17 @@ namespace IMSAPI.Controllers.Administration
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;
+        private readonly int _companyId;
         public RoleController(IRoleService roleService) {
             _roleService = roleService;
+            _companyId = 2; 
         }
         [HttpGet]
         public async Task<IEnumerable<RoleEntity>> Get()
         {
             try
             {
-                return await _roleService.Get();
+                return await _roleService.Get(_companyId);
             }
             catch (Exception ex)
             {
@@ -31,7 +33,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-                List<RoleEntity> objlist = (List<RoleEntity>)await _roleService.Get(id);
+                List<RoleEntity> objlist = (List<RoleEntity>)await _roleService.Get(_companyId,id);
                 if (objlist.Count > 0)
                 {
                     return objlist[0];
@@ -52,6 +54,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
+                obj.CompanyId = _companyId;
                 if (await _roleService.SaveUpdate(obj))
                 {
                     return Ok();

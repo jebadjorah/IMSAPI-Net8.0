@@ -10,16 +10,19 @@ namespace IMSAPI.Controllers.Administration
     public class EntityController : ControllerBase
     {
         private readonly IEntityService _entityService;
+        private readonly int _companyId;
         public EntityController(IEntityService entityService)
         {
             _entityService = entityService;
+            _companyId = 2;
         }
         [HttpGet]
         public async Task<IEnumerable<Entity>> Get()
         {
             try
             {
-                return await _entityService.Get();
+                return await _entityService.Get(_companyId);
+
             }
             catch (Exception ex)
             {
@@ -31,7 +34,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-                List<Entity> objlist = (List<Entity>)await _entityService.Get(id);
+                List<Entity> objlist = (List<Entity>)await _entityService.Get(_companyId,id);
                 if (objlist.Count > 0)
                 {
                     return objlist[0];
@@ -52,6 +55,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
+                obj.CompanyId = _companyId;
                 if (await _entityService.SaveUpdate(obj))
                 {
                     return Ok();

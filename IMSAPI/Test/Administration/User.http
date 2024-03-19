@@ -19,11 +19,11 @@ Import System.Runtime.InteropServices
 
 @rootUrl=https://localhost:7101/api/User
 ### Get All
-GET {{rootUrl}}/Get
+GET {{rootUrl}}/Get?id=0&roleId=1
 
 
 #####  Get by Id
-GET {{rootUrl}}/GetbyId?id=5
+GET {{rootUrl}}/GetbyId?id=0&roleId=1
 
 ##### Save / Update
 
@@ -31,12 +31,11 @@ POST {{rootUrl}}/SaveUpdate
 Content-Type: application/json
 
   {
-  "entityName": "Branch-5",
-  "entityCode": "Branch-5",
-  "isActive": true,
-  "parentId": 0,
-  "companyId": 3
-  }
+  "userId": "User-2",
+  "password": "123",
+  "roleId": 2,
+  "isActive": true
+}
 
 #### Delete
-DELETE {{rootUrl}}/Delete?id=5
+DELETE {{rootUrl}}/Delete?id=3

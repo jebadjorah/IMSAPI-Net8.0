@@ -31,43 +31,29 @@ namespace IMSAPI.Services.Administration
             }
             }
 
-        public async Task<IEnumerable<Entity>> Get(int id = 0)
+        public async Task<IEnumerable<Entity>> Get(int companyId, int id = 0)
         {
         var objList = new List<Entity>();
         try
         {
-            if (id > 0)
-            {
-                    var  obj = await _config.entityModels.FindAsync(id);
-                    if (obj != null)
-                    {
-                        var item = new Entity
-                        {
-                            EntityCode = obj.EntityCode,
-                            EntityName = obj.EntityName,
-                            ParentId = obj.ParentId,
-                            IsActive = obj.IsActive,
-                            CompanyId = obj.CompanyId,
-                            Id = obj.Id
-                        };
-                        objList.Add(item);
-                    }
-            }
-            else
-            {
-                     var companyModels = await _config.entityModels.ToListAsync();
-                  //  var companyModels = await _config.entityModels.Where(x => x.CompanyId ==2).ToListAsync();
-                    objList = companyModels
+            
+                     var obj = await _config.entityModels
+                    .Where(x => x.CompanyId ==companyId && (id ==0 || x.Id ==id)) .ToListAsync();
+                //  var companyModels = await _config.entityModels.Where(x => x.CompanyId ==2).ToListAsync();
+                if (obj != null && obj.Count > 0)
+                {
+                    objList = obj
                         .Select(x => new Entity
                         {
-                        EntityCode = x.EntityCode,
-                        EntityName = x.EntityName,
-                        ParentId = x.ParentId,
-                        IsActive = x.IsActive,
-                        CompanyId =x.CompanyId,
-                        Id= x.Id
+                            EntityCode = x.EntityCode,
+                            EntityName = x.EntityName,
+                            ParentId = x.ParentId,
+                            IsActive = x.IsActive,
+                            CompanyId = x.CompanyId,
+                            Id = x.Id
                         }).ToList();
-            }
+                }
+            
         }
         catch (Exception ex)
         {

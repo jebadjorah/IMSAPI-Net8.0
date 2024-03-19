@@ -23,11 +23,11 @@ namespace IMSAPI.Controllers.Administration
         }
        
         [HttpGet]
-        public async Task<IEnumerable<UserEntity>> Get()
+        public async Task<IEnumerable<UserEntity>> Get(int roleId = 0, int id = 0)
         {
             try
             {
-                return await _userService.Get(_companyId);
+                return await _userService.Get(_companyId, roleId, id);
             }
             catch (Exception ex)
             {
@@ -35,11 +35,11 @@ namespace IMSAPI.Controllers.Administration
             }
         }
         [HttpGet]
-        public async Task<UserEntity> GetbyId(int id=0 , int roleId=0)
+        public async Task<UserEntity> GetbyId(int id)
         {
             try
             {
-                var objlist = (List<UserEntity>)await _userService.Get(_companyId, roleId, id);
+                var objlist = (List<UserEntity>)await _userService.Get(_companyId, 0, id);
                 if (objlist.Count > 0)
                 {
                     return objlist[0];
@@ -60,7 +60,8 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-                if (await _userService.SaveUpdate(_companyId,obj))
+                obj.CompanyId = _companyId;
+                if (await _userService.SaveUpdate(obj))
                 {
                     return Ok();
                 }
