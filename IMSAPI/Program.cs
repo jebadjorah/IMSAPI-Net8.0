@@ -1,4 +1,5 @@
 using IMSAPI.DB;
+using IMSAPI.Installer;
 using IMSAPI.Services.Administration;
 using IMSAPI.Services.Administration.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -7,12 +8,9 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<ICompanyService, CompanyService>();
-builder.Services.AddScoped<IEntityService, EntityService>();
-builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<TokenService, TokenService>();
-//builder.Services.AddScoped<ILogger, ILogger>();
+var identitySettingsSection =builder.Configuration.GetSection("AppSettings");
+InstallerExtenstions.IntallServices(builder, identitySettingsSection)
+    ;//builder.Services.AddScoped<ILogger, ILogger>();
 
 
 builder.Services.AddLogging();
@@ -38,6 +36,7 @@ builder.Services.AddSwaggerGen(swagger =>
         In = ParameterLocation.Header,
         Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
     });
+    
     swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -68,8 +67,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
 app.UseAuthorization();
+app.UseAuthentication();
+
 
 app.MapControllers();
 
