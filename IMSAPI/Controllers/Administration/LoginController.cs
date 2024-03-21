@@ -21,15 +21,17 @@ namespace IMSAPI.Controllers.Administration
         [HttpPost]
         public async Task<IActionResult> Login(AuthRequest  obj)
         {
-           // return null;
+            // return null;
 
-            var accessToken = _tokenService.CreateToken(obj);
+            //var accessToken = _tokenService.CreateToken(obj);
+            var accessToken = _tokenService.GenerateJWTToken(obj);
 
             return Ok(new AuthResponse
             {
                 UserName = obj.UserName,
                 //Email = obj.Email,
                 Token = accessToken,
+                //expires= ac
             });
         }
         [HttpPost]

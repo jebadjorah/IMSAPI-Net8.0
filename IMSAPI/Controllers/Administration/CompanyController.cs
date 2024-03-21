@@ -9,9 +9,10 @@ using System.Formats.Asn1;
 
 namespace IMSAPI.Controllers.Administration
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize]
+    
     public class CompanyController : ControllerBase
     {
         
