@@ -1,4 +1,5 @@
 using IMSAPI.DB;
+using IMSAPI.Installer;
 using IMSAPI.Services.Administration;
 using IMSAPI.Services.Administration.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,12 +11,8 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<ICompanyService, CompanyService>();
-builder.Services.AddScoped<IEntityService, EntityService>();
-builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<TokenService, TokenService>();
-//builder.Services.AddScoped<ILogger, ILogger>();
+var identitySettingsSection = builder.Configuration.GetSection("AppSettings");
+InstallerExtenstions.IntallServices(builder, identitySettingsSection);
 
 
 builder.Services.AddLogging();
