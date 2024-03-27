@@ -36,7 +36,7 @@ namespace IMSAPI.Services.Administration
                 new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("JwtTokenSettings")["ValidAudience"],
                 claims: claims,
                 notBefore: DateTime.UtcNow,
-                expires: DateTime.UtcNow.AddDays(30),
+                expires: DateTime.UtcNow.AddMinutes(ExpirationMinutes),
                 signingCredentials: new SigningCredentials(
                     new SymmetricSecurityKey(
                        Encoding.UTF8.GetBytes(symmetricSecurityKey)
@@ -64,7 +64,7 @@ namespace IMSAPI.Services.Administration
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Expires = DateTime.UtcNow.AddMinutes(15), // Extend expiration time
+                Expires = DateTime.UtcNow.AddMinutes(ExpirationMinutes), // Extend expiration time
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
