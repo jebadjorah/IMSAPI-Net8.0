@@ -1,4 +1,5 @@
 ﻿using IMSAPI.DB;
+using IMSAPI.Filters;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ using System.Formats.Asn1;
 
 namespace IMSAPI.Controllers.Administration
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     
@@ -22,6 +23,7 @@ namespace IMSAPI.Controllers.Administration
             _companyService = companyService;
         }
         [HttpGet]
+        [CustomPrivilageFilter]
         public async Task<IEnumerable<CompanyEntity>> Get()
         {
             try

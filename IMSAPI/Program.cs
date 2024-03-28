@@ -43,7 +43,11 @@ builder.Services.AddAuthentication(cfg => {
 
     };
 });
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(options =>
+{ 
+   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
+    throw new InvalidOperationException("Connection String is not found"));
+ });
 
 var app = builder.Build();
 

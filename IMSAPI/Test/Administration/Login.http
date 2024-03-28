@@ -19,7 +19,13 @@ Import System.Runtime.InteropServices
 
 @rootUrl=https://localhost:7101/api/Login
 ### Login
-Post {{rootUrl}}/Login?userName=admin&password=123
+Post {{rootUrl}}/Login
+Content-Type: application/json
+
+{
+  "userName": "string",
+  "password": "string"
+}
 
 
 ### Login
