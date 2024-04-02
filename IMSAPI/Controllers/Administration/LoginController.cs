@@ -24,7 +24,13 @@ namespace IMSAPI.Controllers.Administration
             // return null;
 
             //var accessToken = _tokenService.CreateToken(obj);
-            var accessToken = _tokenService.GenerateJWTToken(obj);
+            ClaimResponse claimResponse = new ClaimResponse();
+            // get from DB
+            claimResponse.UserName = obj.UserName;
+            claimResponse.RoleName = obj.UserName;
+            claimResponse.CompanyId = 2;
+
+         var accessToken = _tokenService.GenerateJWTToken(claimResponse);
 
             return Ok(new AuthResponse
             {

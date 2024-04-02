@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Formats.Asn1;
+using System.Reflection.Metadata;
+//using System.Security.Claims;
 
 namespace IMSAPI.Controllers.Administration
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     
@@ -21,9 +23,17 @@ namespace IMSAPI.Controllers.Administration
         public CompanyController(ICompanyService companyService) 
         {
             _companyService = companyService;
+
+         //string  claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
+         
+         //   foreach (var claim in claimsIdentity)
+         //   {
+         //       System.Console.WriteLine(claim.Type + ":" + claim.Value);
+         //   }
+
         }
         [HttpGet]
-        [CustomPrivilageFilter]
+        [CustomAuthorizationFilter]
         public async Task<IEnumerable<CompanyEntity>> Get()
         {
             try

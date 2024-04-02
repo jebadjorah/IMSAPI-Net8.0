@@ -17,7 +17,7 @@ namespace IMSAPI.Services.Administration
             _logger = logger;
         }
 
-        public string GenerateJWTToken(AuthRequest user)
+        public string GenerateJWTToken(ClaimResponse user)
         {
             var jwtSub = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("JwtTokenSettings")["JwtRegisteredClaimNamesSub"];
             var symmetricSecurityKey = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("JwtTokenSettings")["SymmetricSecurityKey"];
@@ -28,7 +28,11 @@ namespace IMSAPI.Services.Administration
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier ,user.UserName) 
+                new Claim(ClaimTypes.NameIdentifier ,user.UserName),
+                new Claim(ClaimTypes.Role ,user.RoleName.ToString()),
+                new Claim("CompanyId",user.CompanyId.ToString()),
+                new Claim("UserId",user.UserId.ToString()),
+                new Claim("RoleId",user.RoleId.ToString())
             };
 
             var jwtToken = new JwtSecurityToken(

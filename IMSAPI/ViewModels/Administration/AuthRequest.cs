@@ -11,4 +11,13 @@
         public string Token { get; set; }
         public  DateTime? expires { get; set; }
     }
+    public class ClaimResponse
+    {
+        public int UserId { get; set; }
+        public int RoleId { get; set; }
+        public int CompanyId { get; set; }
+        public string UserName { get; set; }
+        public string  RoleName { get; set;}
+        
+    }
 }
