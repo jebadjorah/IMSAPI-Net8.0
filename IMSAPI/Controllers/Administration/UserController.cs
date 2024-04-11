@@ -1,7 +1,9 @@
 ﻿using IMSAPI.DB;
+using IMSAPI.Filters;
 using IMSAPI.Models.Administration;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
@@ -11,6 +13,8 @@ using System.Collections.Immutable;
 
 namespace IMSAPI.Controllers.Administration
 {
+    [Authorize]
+    [CustomAuthorizationFilter]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase

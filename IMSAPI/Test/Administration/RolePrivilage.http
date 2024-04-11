@@ -17,7 +17,7 @@ Import System.Runtime.InteropServices
 <Assembly: Guid("538a1168-39dc-401a-9d67-fdbee36a5613")> 
 
 
-@rootUrl=https://localhost:7101/api/Company
+@rootUrl=https://localhost:7101/api/RolePrivilage
 @Token =eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNDVoMDk4YmI4cmViZXIxYncycjR2NHZiODk0NSIsImp0aSI6IjBhZTY3OWNjLTdiODMtNGU4NC05OTc4LTk1NTFkMDg5YWM0NyIsImlhdCI6IjE3MTI4NjU3ODgiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IkFkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJDb21wYW55SWQiOiIyIiwiVXNlcklkIjoiMSIsIlJvbGVJZCI6IjEiLCJuYmYiOjE3MTI4NjU3ODgsImV4cCI6MTcxNTQ1Nzc4OCwiaXNzIjoiSXNzdWVyIiwiYXVkIjoiQXVkaWVuY2UifQ.EWbBy-MxOcenezQ8XR61C8KMi9J7Zxvn6AA7YmCYLQw
 ### Get All
 GET {{rootUrl}}/Get
@@ -34,15 +34,14 @@ POST {{rootUrl}}/SaveUpdate
 Authorization: Bearer {{Token}}
 Content-Type: application/json
 
-  {      
-    "companyCode": "C-003",
-    "companyName": "BusinessBay - 3",
-    "companyAddress": "Dubai",
-    "isActive": true,
-    "email": "bay@email.com",
-    "contactNumber": "87t8788"
+  {
+      "id": 3,
+    "ControllerName": "Company",
+    "ActionName": "Get",
+    "RoleId": 1,
+    "IsAllowed": true
   }
 
 #### Delete
-DELETE {{rootUrl}}/Delete?id=4
+DELETE {{rootUrl}}/Delete?id=1
 Authorization: Bearer {{Token}}

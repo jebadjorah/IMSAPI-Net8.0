@@ -12,5 +12,6 @@ namespace IMSAPI.DB
         public DbSet<EntityModel> entityModels { get; set; }
         public DbSet<RoleModel> roleModels { get; set; }
         public DbSet<UserModel> userModels { get; set; }
+        public DbSet<RolePrivilageModel> rolePrivilageModels { get; set; }
     }
 }

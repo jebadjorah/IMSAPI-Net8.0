@@ -1,32 +1,33 @@
-﻿using IMSAPI.Filters;
+﻿using IMSAPI.Services.Administration;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace IMSAPI.Controllers.Administration
 {
     [Authorize]
-    [CustomAuthorizationFilter]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class EntityController : ControllerBase
+    public class RolePrivilageController : ControllerBase
     {
-        private readonly IEntityService _entityService;
-        private readonly int _companyId;
-        public EntityController(IEntityService entityService)
+        private readonly IRolePrivilageService _rolePrivilageService;
+        private readonly int companyId;
+        public RolePrivilageController(IRolePrivilageService rolePrivilageService) 
         {
-            _entityService = entityService;
-            _companyId = 2;
+            _rolePrivilageService = rolePrivilageService;
+            companyId = 2;
         }
         [HttpGet]
-        public async Task<IEnumerable<Entity>> Get()
+        public async Task<IEnumerable<RolePrivilageEntity>> Get()
         {
             try
             {
-                return await _entityService.Get(_companyId);
 
+                await _rolePrivilageService.GetAllControllerANDActionName();
+                return await _rolePrivilageService.Get(companyId);
             }
             catch (Exception ex)
             {
@@ -34,11 +35,11 @@ namespace IMSAPI.Controllers.Administration
             }
         }
         [HttpGet]
-        public async Task<Entity> GetbyId(int id)
+        public async Task<RolePrivilageEntity> GetbyId(int id)
         {
             try
             {
-                List<Entity> objlist = (List<Entity>)await _entityService.Get(_companyId,id);
+                List<RolePrivilageEntity> objlist = (List<RolePrivilageEntity>)await _rolePrivilageService.Get(companyId, 0,id);
                 if (objlist.Count > 0)
                 {
                     return objlist[0];
@@ -55,12 +56,11 @@ namespace IMSAPI.Controllers.Administration
             }
         }
         [HttpPost]
-        public async Task<ActionResult> SaveUpdate(Entity obj)
+        public async Task<ActionResult> SaveUpdate(RolePrivilageEntity obj)
         {
             try
             {
-                obj.CompanyId = _companyId;
-                if (await _entityService.SaveUpdate(obj))
+                if (await _rolePrivilageService.SaveUpdate(obj))
                 {
                     return Ok();
                 }
@@ -81,7 +81,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-                if (await _entityService.Delete(id))
+                if (await _rolePrivilageService.Delete(id))
                 {
                     return Ok();
                 }
@@ -95,6 +95,5 @@ namespace IMSAPI.Controllers.Administration
                 return BadRequest();
             }
         }
-
     }
 }

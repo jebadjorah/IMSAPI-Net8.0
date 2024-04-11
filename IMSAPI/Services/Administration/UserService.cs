@@ -15,16 +15,29 @@ namespace IMSAPI.Services.Administration
             _config = config;
         }
 
-        public async Task<bool> LoginUser(string userName, string Password)
+        public async Task<ClaimResponse> LoginUser(string userName, string Password)
         {
+            ClaimResponse response = null;
             try {
-
-                return true;
+                var item = await _config.userModels.Where(x => x.UserId == userName && x.Password == Password).FirstOrDefaultAsync();
+                var roleItem = await _config.roleModels.Where(x => x.Id == item.RoleId).FirstOrDefaultAsync();
+                if (item != null  && roleItem !=null)
+                {
+                    response = new ClaimResponse();
+                    response.UserName = item.UserId;
+                    response.RoleName = roleItem.RoleName.ToString();
+                    response.CompanyId = item.CompanyId;
+                    response.RoleId = item.RoleId;
+                    response.UserId = item.Id;
+                    return response;
+                }
+                
             }
             catch(Exception ex)
             {
-                return false;
+                return null;
             }
+            return response;
         }
         public async Task<bool> Delete(int id)
         {

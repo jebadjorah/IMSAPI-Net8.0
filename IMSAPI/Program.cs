@@ -1,11 +1,10 @@
 using IMSAPI.DB;
 using IMSAPI.Installer;
-using IMSAPI.Services.Administration;
-using IMSAPI.Services.Administration.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Configuration;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var identitySettingsSection = builder.Configuration.GetSection("AppSettings");
 InstallerExtenstions.IntallServices(builder, identitySettingsSection);
-
 
 builder.Services.AddLogging();
 builder.Services.AddControllers();
@@ -44,10 +42,13 @@ builder.Services.AddAuthentication(cfg => {
     };
 });
 builder.Services.AddDbContext<AppDbContext>(options =>
-{ 
-   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
-    throw new InvalidOperationException("Connection String is not found"));
- });
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
+     throw new InvalidOperationException("Connection String is not found"));
+});
+
+
+//builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
 
 var app = builder.Build();
 

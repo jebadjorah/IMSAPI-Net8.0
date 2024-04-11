@@ -1,5 +1,6 @@
 ﻿using IMSAPI.DB;
 using IMSAPI.Filters;
+using IMSAPI.Services.Administration;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,7 @@ using System.Reflection.Metadata;
 namespace IMSAPI.Controllers.Administration
 {
     [Authorize]
+    [CustomAuthorizationFilter]
     [Route("api/[controller]/[action]")]
     [ApiController]
     
@@ -24,16 +26,16 @@ namespace IMSAPI.Controllers.Administration
         {
             _companyService = companyService;
 
-         //string  claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
-         
-         //   foreach (var claim in claimsIdentity)
-         //   {
-         //       System.Console.WriteLine(claim.Type + ":" + claim.Value);
-         //   }
+
+            //string  claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
+
+            //   foreach (var claim in claimsIdentity)
+            //   {
+            //       System.Console.WriteLine(claim.Type + ":" + claim.Value);
+            //   }
 
         }
         [HttpGet]
-        [CustomAuthorizationFilter]
         public async Task<IEnumerable<CompanyEntity>> Get()
         {
             try

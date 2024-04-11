@@ -23,10 +23,9 @@ Post {{rootUrl}}/Login
 Content-Type: application/json
 
 {
-  "userName": "string",
-  "password": "string"
+  "userName": "admin",
+  "password": "123"
 }
-
 
 ### Login
 POST {{rootUrl}}/RefershToken?jwtToken=kjhkdfdskfhds

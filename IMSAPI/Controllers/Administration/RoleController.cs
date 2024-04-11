@@ -1,11 +1,15 @@
-﻿using IMSAPI.Services.Administration;
+﻿using IMSAPI.Filters;
+using IMSAPI.Services.Administration;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMSAPI.Controllers.Administration
 {
+    [Authorize]
+    [CustomAuthorizationFilter]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class RoleController : ControllerBase

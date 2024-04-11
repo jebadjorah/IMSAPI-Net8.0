@@ -21,24 +21,24 @@ namespace IMSAPI.Controllers.Administration
         [HttpPost]
         public async Task<IActionResult> Login(AuthRequest  obj)
         {
-            // return null;
+            var claimResponse = await _userService.LoginUser(obj.UserName, obj.Password);
 
-            //var accessToken = _tokenService.CreateToken(obj);
-            ClaimResponse claimResponse = new ClaimResponse();
-            // get from DB
-            claimResponse.UserName = obj.UserName;
-            claimResponse.RoleName = obj.UserName;
-            claimResponse.CompanyId = 2;
-
-         var accessToken = _tokenService.GenerateJWTToken(claimResponse);
-
-            return Ok(new AuthResponse
+            if (claimResponse != null)
             {
-                UserName = obj.UserName,
-                //Email = obj.Email,
-                Token = accessToken,
-                //expires= ac
-            });
+                var accessToken = _tokenService.GenerateJWTToken(claimResponse);
+
+                return Ok(new AuthResponse
+                {
+                    UserName = obj.UserName,
+                    //Email = obj.Email,
+                    Token = accessToken,
+                    //expires= ac
+                });
+            }
+            else
+            {
+                return BadRequest("Incorrect UserName / Password");
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Logout(string jwtToken)

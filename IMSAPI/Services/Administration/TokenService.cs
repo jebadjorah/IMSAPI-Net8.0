@@ -9,7 +9,7 @@ namespace IMSAPI.Services.Administration
 {
     public class TokenService
     {
-        private const int ExpirationMinutes = 30;
+        private const int ExpirationMinutes = 43200;
         private readonly ILogger<TokenService> _logger;
 
         public TokenService(ILogger<TokenService> logger)
