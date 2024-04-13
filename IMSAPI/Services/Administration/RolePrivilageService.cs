@@ -127,10 +127,11 @@ namespace IMSAPI.Services.Administration
             }
         }
 
-        public async Task GetAllControllerANDActionName()
+        public async Task<IEnumerable<ControllersDto>> GetAllControllerANDActionName()
         {
-
-            
+            try
+            {
+                var contrllerListDtos = new List<ControllersDto>();
                 Assembly asm = Assembly.GetAssembly(typeof(Program));
 
                 var controlleractionlist = asm.GetTypes()
@@ -140,30 +141,32 @@ namespace IMSAPI.Services.Administration
                         .Select(x => new { Controller = x.DeclaringType.Name, Action = x.Name, ReturnType = x.ReturnType.Name, Attributes = String.Join(",", x.GetCustomAttributes().Select(a => a.GetType().Name.Replace("Attribute", ""))) })
                         .OrderBy(x => x.Controller).ThenBy(x => x.Action).ToList();
 
-            foreach (var item in controlleractionlist)
-            {
-                if (!item.Controller.Contains("Login"))
+                var controllerNames = controlleractionlist.Where(x => !x.Controller.Contains("Login")).Select(x => new { Controller = x.Controller }).Distinct(); // Remove Login Controller
+
+                foreach (var item in controllerNames)
                 {
-                    // add into your list
-                    Console.WriteLine($"Controller: {item.Controller}, Action: {item.Action} ");
+                    ControllersDto controllersDto = new ControllersDto();
+                    controllersDto.ControllerName = item.Controller;
+
+                    var ActionNames = controlleractionlist.Where(x => x.Controller == item.Controller).Select(x => new { Action = x.Action }).Distinct();
+                    List<ActionsDto> Actions = new List<ActionsDto>();
+                    Actions = ActionNames
+                        .Select(x => new ActionsDto
+                        {
+                            ActionName = x.Action
+                        }).ToList();
+
+                    controllersDto.Actions = Actions;
+
+                    contrllerListDtos.Add(controllersDto);
                 }
+
+                return contrllerListDtos;
             }
-
-            //var controllerTypes = Assembly.GetExecutingAssembly().GetTypes()
-            //.Where(t => typeof(ControllerBase).IsAssignableFrom(t));
-
-            //foreach (var controllerType in controllerTypes)
-            //{
-            //    // Get all public methods of the controller
-            //    var actionMethods = controllerType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
-            //        .Where(m => typeof(ActionResult).IsAssignableFrom(m.ReturnType));
-
-            //    foreach (var method in actionMethods)
-            //    {
-            //        // Print the controller and action names
-            //        Console.WriteLine($"Controller: {controllerType.Name}, Action: {method.Name}");
-            //    }
-            //}
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

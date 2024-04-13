@@ -45,3 +45,7 @@ Content-Type: application/json
 #### Delete
 DELETE {{rootUrl}}/Delete?id=1
 Authorization: Bearer {{Token}}
+
+### Get All Controllers & Actions
+GET {{rootUrl}}/GetAllControllerAndActions
+Authorization: Bearer {{Token}}

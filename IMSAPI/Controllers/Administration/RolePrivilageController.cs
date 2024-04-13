@@ -4,6 +4,7 @@ using IMSAPI.ViewModels.Administration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Reflection;
 
 namespace IMSAPI.Controllers.Administration
@@ -25,8 +26,6 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-
-                await _rolePrivilageService.GetAllControllerANDActionName();
                 return await _rolePrivilageService.Get(companyId);
             }
             catch (Exception ex)
@@ -93,6 +92,19 @@ namespace IMSAPI.Controllers.Administration
             catch (Exception ex)
             {
                 return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<ControllersDto>> GetAllControllerAndActions()
+        {
+            try
+            {   
+                return await _rolePrivilageService.GetAllControllerANDActionName();
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
     }

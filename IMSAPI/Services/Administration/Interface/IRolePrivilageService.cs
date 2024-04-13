@@ -9,7 +9,7 @@ namespace IMSAPI.Services.Administration.Interface
         bool GetAccess(int companayId, int roleId, int userId, string actionName, string controllerName);
         Task<bool> SaveUpdate(RolePrivilageEntity obj);
         Task<bool> Delete(int id);
-        Task GetAllControllerANDActionName();
+        Task<IEnumerable<ControllersDto>> GetAllControllerANDActionName();
     }
 
 }
