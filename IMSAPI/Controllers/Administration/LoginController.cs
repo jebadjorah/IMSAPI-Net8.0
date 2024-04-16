@@ -1,9 +1,13 @@
-﻿using IMSAPI.Services.Administration;
+﻿using Azure.Core;
+using IMSAPI.Services.Administration;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
-using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Authentication;
+//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.DirectoryServices.AccountManagement;
+
 
 namespace IMSAPI.Controllers.Administration
 {
@@ -21,7 +25,17 @@ namespace IMSAPI.Controllers.Administration
         [HttpPost]
         public async Task<IActionResult> Login(AuthRequest  obj)
         {
-            var claimResponse = await _userService.LoginUser(obj.UserName, obj.Password);
+            using (var adContext = new PrincipalContext(ContextType.Domain, "smartv.ae"))
+            {
+                var result = adContext.ValidateCredentials(obj.UserName, obj.Password);
+                if (result)
+                {
+                    Console.WriteLine("AD Authentication successfully login");
+                }
+            }
+     
+
+    var claimResponse = await _userService.LoginUser(obj.UserName, obj.Password);
 
             if (claimResponse != null)
             {

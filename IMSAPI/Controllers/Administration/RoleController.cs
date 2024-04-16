@@ -5,6 +5,7 @@ using IMSAPI.ViewModels.Administration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.Design;
 
 namespace IMSAPI.Controllers.Administration
 {
@@ -15,17 +16,19 @@ namespace IMSAPI.Controllers.Administration
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;
-        private readonly int _companyId;
-        public RoleController(IRoleService roleService) {
+        private readonly int companyId;
+        private readonly int userId;
+        public RoleController(IRoleService roleService, IHttpContextAccessor httpContextAccessor) {
             _roleService = roleService;
-            _companyId = 2; 
+            companyId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst("CompanyId").Value);
+            userId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst("UserId").Value);
         }
         [HttpGet]
         public async Task<IEnumerable<RoleEntity>> Get()
         {
             try
             {
-                return await _roleService.Get(_companyId);
+                return await _roleService.Get(companyId);
             }
             catch (Exception ex)
             {
@@ -37,7 +40,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-                List<RoleEntity> objlist = (List<RoleEntity>)await _roleService.Get(_companyId,id);
+                List<RoleEntity> objlist = (List<RoleEntity>)await _roleService.Get(companyId, id);
                 if (objlist.Count > 0)
                 {
                     return objlist[0];
@@ -58,7 +61,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-                obj.CompanyId = _companyId;
+                obj.CompanyId = companyId;
                 if (await _roleService.SaveUpdate(obj))
                 {
                     return Ok();

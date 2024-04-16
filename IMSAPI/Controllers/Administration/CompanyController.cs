@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Formats.Asn1;
 using System.Reflection.Metadata;
+using System.Security.Claims;
 //using System.Security.Claims;
 
 namespace IMSAPI.Controllers.Administration
@@ -22,17 +23,13 @@ namespace IMSAPI.Controllers.Administration
     {
         
         private readonly ICompanyService _companyService;
-        public CompanyController(ICompanyService companyService) 
+        private readonly int companyId;
+        private readonly int userId;
+        public CompanyController(ICompanyService companyService, IHttpContextAccessor httpContextAccessor) 
         {
             _companyService = companyService;
-
-
-            //string  claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
-
-            //   foreach (var claim in claimsIdentity)
-            //   {
-            //       System.Console.WriteLine(claim.Type + ":" + claim.Value);
-            //   }
+            companyId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst("CompanyId").Value);
+            userId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst("UserId").Value);
 
         }
         [HttpGet]

@@ -4,6 +4,7 @@ using IMSAPI.Models.Administration;
 using IMSAPI.Services.Administration.Interface;
 using IMSAPI.ViewModels.Administration;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
@@ -20,10 +21,12 @@ namespace IMSAPI.Controllers.Administration
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly int _companyId;
-        public UserController(IUserService userService) {
+        private readonly int companyId;
+        private readonly int userId;
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor) {
             _userService = userService;
-            _companyId = 2;
+            companyId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst("CompanyId").Value);
+            userId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst("UserId").Value);
         }
        
         [HttpGet]
@@ -31,7 +34,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-                return await _userService.Get(_companyId, roleId, id);
+                return await _userService.Get(companyId, roleId, id);
             }
             catch (Exception ex)
             {
@@ -43,7 +46,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-                var objlist = (List<UserEntity>)await _userService.Get(_companyId, 0, id);
+                var objlist = (List<UserEntity>)await _userService.Get(companyId, 0, id);
                 if (objlist.Count > 0)
                 {
                     return objlist[0];
@@ -64,7 +67,7 @@ namespace IMSAPI.Controllers.Administration
         {
             try
             {
-                obj.CompanyId = _companyId;
+                obj.CompanyId = companyId;
                 if (await _userService.SaveUpdate(obj))
                 {
                     return Ok();

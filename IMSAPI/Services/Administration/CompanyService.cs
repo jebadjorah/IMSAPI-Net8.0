@@ -34,7 +34,6 @@ namespace IMSAPI.Services.Administration
                 return false;
             }
         }
-
         public async Task<IEnumerable<CompanyEntity>> Get(int id = 0)
         {
             var objList = new List<CompanyEntity>();
@@ -43,19 +42,28 @@ namespace IMSAPI.Services.Administration
                 if (id > 0)
                 {
                     CompanyModel obj = await _config.companyModels.FindAsync(id);
-                    var item = new CompanyEntity();
-                    item.CompanyCode = obj.CompanyCode;
-                    item.CompanyName = obj.CompanyName;
-                    item.CompanyAddress = obj.CompanyAddress;
-                    item.IsActive = obj.IsActive;
-                    item.Email = obj.Email;
-                    item.ContactNumber = obj.ContactNumber;
-                    item.Id = obj.Id;
-                    objList.Add(item);
+                    if (obj == null)
+                    {
+                        return null;
+                    }
+                        var item = new CompanyEntity();
+                        item.CompanyCode = obj.CompanyCode;
+                        item.CompanyName = obj.CompanyName;
+                        item.CompanyAddress = obj.CompanyAddress;
+                        item.IsActive = obj.IsActive;
+                        item.Email = obj.Email;
+                        item.ContactNumber = obj.ContactNumber;
+                        item.Id = obj.Id;
+                        objList.Add(item);
+                    
                 }
                 else
                 {
                     List<CompanyModel>companyModels= await _config.companyModels.ToListAsync();
+                    if(companyModels == null)
+                    {
+                        return null;
+                    }
                     foreach (var obj in companyModels)
                     {
                         var item = new CompanyEntity();
@@ -76,8 +84,6 @@ namespace IMSAPI.Services.Administration
             }
             return objList;
         }
-
-
         public async Task<bool> SaveUpdate(CompanyEntity obj)
         {
             try

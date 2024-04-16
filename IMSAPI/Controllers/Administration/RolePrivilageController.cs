@@ -16,10 +16,12 @@ namespace IMSAPI.Controllers.Administration
     {
         private readonly IRolePrivilageService _rolePrivilageService;
         private readonly int companyId;
-        public RolePrivilageController(IRolePrivilageService rolePrivilageService) 
+        private readonly int userId;
+        public RolePrivilageController(IRolePrivilageService rolePrivilageService, IHttpContextAccessor httpContextAccessor) 
         {
             _rolePrivilageService = rolePrivilageService;
-            companyId = 2;
+            companyId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst("CompanyId").Value);
+            userId = int.Parse(httpContextAccessor.HttpContext.User.FindFirst("UserId").Value);
         }
         [HttpGet]
         public async Task<IEnumerable<RolePrivilageEntity>> Get()

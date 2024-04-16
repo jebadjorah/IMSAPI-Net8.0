@@ -20,7 +20,6 @@ namespace IMSAPI.Filters
         {
             _rolePrivilageService = context.HttpContext.RequestServices.GetRequiredService<IRolePrivilageService>();
             
-            
             var UserId = int.Parse(context.HttpContext.User.FindFirst("UserId").Value);
             var RoleId = int.Parse(context.HttpContext.User.FindFirst("RoleId").Value);
             var CompanyId=int.Parse( context.HttpContext.User.FindFirst("CompanyId").Value);
