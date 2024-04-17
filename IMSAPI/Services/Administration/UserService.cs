@@ -25,6 +25,7 @@ namespace IMSAPI.Services.Administration
                 {
                     response = new ClaimResponse();
                     response.UserName = item.UserId;
+                    response.UserEmail = item.Email;
                     response.RoleName = roleItem.RoleName.ToString();
                     response.CompanyId = item.CompanyId;
                     response.RoleId = item.RoleId;
@@ -34,6 +35,32 @@ namespace IMSAPI.Services.Administration
                 
             }
             catch(Exception ex)
+            {
+                return null;
+            }
+            return response;
+        }
+        public async Task<ClaimResponse> LoginAD(string userEmail)
+        {
+            ClaimResponse response = null;
+            try
+            {
+                var item = await _config.userModels.Where(x => x.Email == userEmail  || x.UserId == userEmail).FirstOrDefaultAsync();
+                var roleItem = await _config.roleModels.Where(x => x.Id == item.RoleId).FirstOrDefaultAsync();
+                if (item != null && roleItem != null)
+                {
+                    response = new ClaimResponse();
+                    response.UserName = item.UserId;
+                    response.UserEmail = item.Email;
+                    response.RoleName = roleItem.RoleName.ToString();
+                    response.CompanyId = item.CompanyId;
+                    response.RoleId = item.RoleId;
+                    response.UserId = item.Id;
+                    return response;
+                }
+
+            }
+            catch (Exception ex)
             {
                 return null;
             }
@@ -70,6 +97,7 @@ namespace IMSAPI.Services.Administration
                         {
                             UserId = x.UserId,
                             Password = x.Password,
+                            Email = x.Email,
                             RoleId = x.RoleId,
                             IsActive = x.IsActive,
                             Id = x.Id
@@ -95,6 +123,7 @@ namespace IMSAPI.Services.Administration
                     {
                         result.UserId = obj.UserId;
                         result.Password = obj.Password;
+                        result.Email = obj.Email;
                         result.IsActive = obj.IsActive;
                         result.RoleId = obj.RoleId;
                         result.UpdatedOn = DateTime.Now;
@@ -114,6 +143,7 @@ namespace IMSAPI.Services.Administration
                     {
                         UserId = obj.UserId,
                         Password = obj.Password,
+                        Email = obj.Email,
                         IsActive = obj.IsActive,
                         RoleId = obj.RoleId,
                         CompanyId = obj.CompanyId,

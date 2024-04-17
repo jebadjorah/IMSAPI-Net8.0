@@ -8,5 +8,6 @@ namespace IMSAPI.Services.Administration.Interface
         Task<bool> SaveUpdate(UserEntity obj);
         Task<bool> Delete(int id);
         Task<ClaimResponse> LoginUser(string userName, string password);
+        Task<ClaimResponse> LoginAD(string userEmail);
     }
 }
