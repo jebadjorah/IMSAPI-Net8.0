@@ -23,8 +23,8 @@ Post {{rootUrl}}/Login
 Content-Type: application/json
 
 {
-  "userName": "admin",
-  "password": "123"
+  "userName": "jabaseelan.a@smartv.ae",
+  "password": "Jeba@101"
 }
 
 ### Login

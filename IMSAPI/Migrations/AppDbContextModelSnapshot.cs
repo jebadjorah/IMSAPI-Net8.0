@@ -157,6 +157,45 @@ namespace IMSAPI.Migrations
                     b.ToTable("Tbl_Roles");
                 });
 
+            modelBuilder.Entity("IMSAPI.Models.Administration.RolePrivilageModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ControllerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsAllowed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tbl_RolePrivilage");
+                });
+
             modelBuilder.Entity("IMSAPI.Models.Administration.UserModel", b =>
                 {
                     b.Property<int>("Id")
@@ -173,6 +212,10 @@ namespace IMSAPI.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -198,8 +241,6 @@ namespace IMSAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.HasIndex("RoleId");
 
@@ -230,19 +271,11 @@ namespace IMSAPI.Migrations
 
             modelBuilder.Entity("IMSAPI.Models.Administration.UserModel", b =>
                 {
-                    b.HasOne("IMSAPI.Models.Administration.CompanyModel", "Company")
-                        .WithMany("Users")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("IMSAPI.Models.Administration.RoleModel", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Company");
 
                     b.Navigation("Role");
                 });
@@ -252,8 +285,6 @@ namespace IMSAPI.Migrations
                     b.Navigation("Entitys");
 
                     b.Navigation("Roles");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("IMSAPI.Models.Administration.RoleModel", b =>

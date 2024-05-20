@@ -15,6 +15,7 @@ namespace IMSAPI.Installer
             builder.Services.AddScoped<IRolePrivilageService, RolePrivilageService>();
             builder.Services.AddScoped<TokenService, TokenService>();
             builder.Services.AddScoped<CustomAuthorizationFilter, CustomAuthorizationFilter>();
+            builder.Services.AddScoped<IAzureTokenValidatorService, AzureTokenValidatorService>();
         }
 
     }

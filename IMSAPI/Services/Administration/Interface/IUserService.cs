@@ -9,5 +9,6 @@ namespace IMSAPI.Services.Administration.Interface
         Task<bool> Delete(int id);
         Task<ClaimResponse> LoginUser(string userName, string password);
         Task<ClaimResponse> LoginAD(string userEmail);
+        Task<bool> UpdateRefereshToken(int empoyeeId, string refershToken);
     }
 }

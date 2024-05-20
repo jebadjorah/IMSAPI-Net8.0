@@ -66,6 +66,37 @@ namespace IMSAPI.Services.Administration
             }
             return response;
         }
+        public async Task<bool> UpdateRefereshToken(int empoyeeId, string refershToken)
+        {
+            //try
+            //{
+            //    var result = await _config.RefreshTokenModel.FirstOrDefaultAsync(x => x.EmployeeId == empoyeeId);
+            //    if (result != null)
+            //    {
+            //        result.RefreshTokenExpiration = DateTime.Now.AddDays(RefereshTokenBuffer);
+            //        result.RefreshToken = refershToken;
+            //        await _config.SaveChangesAsync();
+            //    }
+            //    else
+            //    {
+            //        var inputObj = new RefreshTokenModel
+            //        {
+            //            EmployeeId = empoyeeId,
+            //            RefreshTokenExpiration = DateTime.Now.AddDays(RefereshTokenBuffer),
+            //            RefreshToken = refershToken
+            //        };
+            //        await _config.RefreshTokenModel.AddAsync(inputObj);
+            //        await _config.SaveChangesAsync();
+            //    }
+            //    return true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.CreateErrorLog(ex, "UpdateRefereshToken");
+            //    return false;
+            //}
+            return true;
+        }
         public async Task<bool> Delete(int id)
         {
             try

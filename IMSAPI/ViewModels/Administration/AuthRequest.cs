@@ -21,4 +21,10 @@
         public string  RoleName { get; set;}
         
     }
+    public class AzureLoginRequest
+    {
+        public string UserName { get; set; }
+        public string AzureToken { get; set; }
+
+    }
 }
